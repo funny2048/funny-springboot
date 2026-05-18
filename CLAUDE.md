@@ -9,28 +9,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 mvn clean install
 
 # Build starter only (must publish before codegen/example can compile)
-cd funny-springboot3-starter && mvn clean deploy
+cd funny-springboot-starter && mvn clean deploy
 
 # Run codegen app
-cd funny-springboot3-codegen && mvn spring-boot:run
+cd funny-springboot-codegen && mvn spring-boot:run
 
 # Run example app
-cd funny-springboot3-example/example-web && mvn spring-boot:run
+cd funny-springboot-example/example-web && mvn spring-boot:run
 ```
 
-Starter modules are published to Aliyun Maven repo (`funny-springboot3-starter-parent` version `1.0.1-RELEASE`). After changing starter code, redeploy before building downstream modules.
+Starter modules are published to Aliyun Maven repo (`funny-springboot-starter-parent` version `1.0.1-RELEASE`). After changing starter code, redeploy before building downstream modules.
 
 ## Module Architecture
 
 ```
 funny-springboot3 (root pom, imports fun-bom)
-├── funny-springboot3-starter          # Framework starter library (published artifact)
+├── funny-springboot-starter          # Framework starter library (published artifact)
 │   ├── starter-parent                 # BOM: manages all dependency versions
 │   ├── starter-web                    # Auto-config: FastJSON, XSS, global exception, XXL-Job, Feign, Redis
 │   └── starter-dao                    # Auto-config: MyBatis-Plus, Druid, dynamic-datasource, MySQL
-├── funny-springboot3-codegen          # Code generator Spring Boot app
+├── funny-springboot-codegen          # Code generator Spring Boot app
 │   └── src/main/resources/templates/  # Freemarker templates (springboot2/ × springboot3/ × monolith/layered)
-└── funny-springboot3-example          # Demo app showing starter usage
+└── funny-springboot-example          # Demo app showing starter usage
     ├── example-api                    # API interfaces + DTOs (client contract)
     └── example-web                    # Implementation: controllers, services, DAO
 ```
@@ -49,7 +49,7 @@ funny-springboot3 (root pom, imports fun-bom)
 - Java 21, Spring Boot 3.5.4, Maven
 - MyBatis-Plus 3.5.9 + Druid + dynamic-datasource
 - OpenFeign, XXL-Job 3.3.1, COLA extension 4.3.2
-- `funny-bom` manages internal dependencies: `funny-framework-core`, `funny-framework-tool`, `funny-framework-crypto`, `funny-log-springboot-starter`, `funny-redis-springboot-starter`
+- `funny-bom` manages internal dependencies: `funny-framework-core`, `funny-framework-tool`, `funny-framework-crypto`, `funny-springboot-starter-log`, `funny-springboot-starter-redis`, `funny-springboot-starter-sign`, `funny-springboot-starter-crypto`
 - The `funny-framework` source is at `../funny-framework`
 
 ## Starter Web Auto-configured Beans

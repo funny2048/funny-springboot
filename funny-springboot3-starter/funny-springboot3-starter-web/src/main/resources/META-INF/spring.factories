@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.funny.framework.web.ComboWebAutoConfiguration,\
-com.funny.framework.web.task.ComboTaskAutoConfiguration

@@ -1,0 +1,10 @@
+{
+  "properties": [
+    {
+      "name": "combo.web.enabled",
+      "type": "java.lang.Boolean",
+      "description": "if enable webConfig.",
+      "defaultValue": "true"
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.funny</groupId>
+	<artifactId>funny-springboot3</artifactId>
+    <version>${revision}</version>
+
+    <packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+
+	<properties>
+        <!-- 统一版本 -->
+        <revision>1.0.0</revision>
+
+        <!-- Java -->
+        <java.version>21</java.version>
+        <!-- Encoding -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Maven Plugin -->
+        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+	</properties>
+
+	<modules>
+		<module>funny-springboot3-starter</module>
+		<module>funny-springboot3-codegen</module>
+		<module>funny-springboot3-example</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.funny</groupId>
+				<artifactId>funny-bom</artifactId>
+				<version>1.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Internal starter modules (not in funny-bom) -->
+			<dependency>
+				<groupId>com.funny</groupId>
+				<artifactId>funny-springboot3-starter-web</artifactId>
+				<version>1.0.1-RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>com.funny</groupId>
+				<artifactId>funny-springboot3-starter-dao</artifactId>
+				<version>1.0.1-RELEASE</version>
+			</dependency>
+
+			<!-- Spring Cloud (not in funny-bom) -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-openfeign</artifactId>
+				<version>4.3.0</version>
+			</dependency>
+
+			<!-- Override: funny-dependencies imports spring-boot-dependencies:2.3.12 which manages Lombok to 1.18.20 -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>1.18.38</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!-- 配置远程发布到私服，mvn deploy -->
+	<distributionManagement>
+		<repository>
+			<id>rdc-releases</id>
+			<url>https://packages.aliyun.com/maven/repository/2015788-release-XtEkJb</url>
+		</repository>
+		<snapshotRepository>
+			<id>rdc-snapshots</id>
+			<url>https://packages.aliyun.com/maven/repository/2015788-snapshot-V4uFmo/</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>

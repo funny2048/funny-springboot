@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.funny</groupId>
+        <artifactId>funny-springboot3-starter-parent</artifactId>
+        <version>1.0.1-RELEASE</version>
+        <relativePath>../funny-springboot3-starter-parent/pom.xml</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.funny</groupId>
+    <artifactId>funny-springboot3-starter-web</artifactId>
+
+    <dependencies>
+        <!-- Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+
+        <!--  funny springboot-starter -->
+        <dependency>
+            <groupId>com.funny</groupId>
+            <artifactId>funny-log-springboot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.funny</groupId>
+            <artifactId>funny-crypto-springboot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.funny</groupId>
+            <artifactId>funny-sign-springboot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.funny</groupId>
+            <artifactId>funny-redis-springboot-starter</artifactId>
+        </dependency>
+
+        <!-- RPC -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- COLA Extension -->
+        <dependency>
+            <groupId>com.alibaba.cola</groupId>
+            <artifactId>cola-component-extension-starter</artifactId>
+        </dependency>
+
+
+        <!-- Task (merged from starter-task) -->
+        <dependency>
+            <groupId>com.xuxueli</groupId>
+            <artifactId>xxl-job-core</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>服务端代码生成工具</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap">
+  <style>
+    :root {
+      --main-blue: #2196f3;
+      --main-blue-light: #e3f2fd;
+      --main-blue-dark: #1565c0;
+      --main-white: #fff;
+      --main-gray: #f5f7fa;
+      --border-radius: 8px;
+      --shadow: 0 2px 8px rgba(33, 150, 243, 0.08);
+    }
+    body {
+      margin: 0;
+      font-family: 'Roboto', Arial, sans-serif;
+      background: var(--main-gray);
+      color: #222;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      background: var(--main-white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 32px 40px 24px 40px;
+      display: flex;
+      flex-direction: column;
+      min-height: 700px;
+      height: 750px;
+    }
+    .title {
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--main-blue-dark);
+      margin-bottom: 32px;
+      letter-spacing: 1px;
+    }
+    .main-content {
+      display: flex;
+      gap: 40px;
+      flex: 1;
+    }
+    .form-section {
+      flex: 1.5;
+      background: var(--main-blue-light);
+      border-radius: var(--border-radius);
+      padding: 28px 32px 24px 32px;
+      box-sizing: border-box;
+      min-width: 380px;
+      max-width: 520px;
+      max-height: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .form-section-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--main-blue-dark);
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .form-group label {
+      font-size: 1rem;
+      color: var(--main-blue-dark);
+      font-weight: 500;
+      min-width: 100px;
+      text-align: right;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+    .form-group input,
+    .form-group textarea {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #b3c6e0;
+      border-radius: 5px;
+      font-size: 1rem;
+      background: var(--main-white);
+      transition: border 0.2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border: 1.5px solid var(--main-blue);
+      outline: none;
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 60px;
+      max-height: 120px;
+      width: 100%;
+    }
+    .radio-group {
+      display: flex;
+      gap: 16px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      max-width: 100%;
+      justify-content: flex-start;
+    }
+    .radio-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      width: 90px;
+      height: 40px;
+      border: 2px solid #b3c6e0;
+      border-radius: 10px;
+      background: var(--main-white);
+      transition: border 0.2s, background 0.2s;
+      font-weight: 500;
+      user-select: none;
+      text-align: center;
+      word-break: break-all;
+      white-space: pre-line;
+      font-size: 1rem;
+      line-height: 1.2;
+      padding: 0 6px;
+    }
+    .radio-box.selected {
+      border: 2px solid var(--main-blue);
+      background: #e3f2fd;
+      color: var(--main-blue-dark);
+    }
+    .radio-box input[type="radio"] {
+      display: none;
+    }
+    .preview-section {
+      flex: 1.2;
+      background: var(--main-white);
+      border-radius: var(--border-radius);
+      padding: 28px 28px 24px 28px;
+      box-sizing: border-box;
+      min-width: 320px;
+      max-width: 600px;
+      box-shadow: 0 0 0 1px #e3f2fd;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      max-height: 600px;
+      overflow: hidden;
+    }
+    .preview-section-scroll {
+      flex: 1;
+      overflow-y: auto;
+      min-height: 0;
+      max-height: 500px;
+    }
+    .preview-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--main-blue-dark);
+      margin-bottom: 10px;
+    }
+    .component-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 16px;
+      min-width: 0;
+      width: 100%;
+    }
+    .component-list.monolith {
+      justify-items: stretch;
+      align-items: stretch;
+      margin-bottom: 8px;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 24px 24px;
+    }
+    .component-list.monolith .component-box {
+      margin-bottom: 0;
+    }
+    .layered-view .component-list {
+      margin-bottom: 0;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px 16px;
+    }
+    .layered-view .layer {
+      margin-bottom: 18px;
+    }
+    .layered-view .layer:last-child {
+      margin-bottom: 0;
+    }
+    .component-box {
+      min-width: 100px;
+      padding: 16px 10px;
+      background: var(--main-blue-light);
+      border: 2px solid #b3c6e0;
+      border-radius: 7px;
+      text-align: center;
+      font-weight: 500;
+      color: var(--main-blue-dark);
+      cursor: pointer;
+      transition: border 0.2s, background 0.2s;
+      user-select: none;
+    }
+    .component-box.selected {
+      border: 2px solid var(--main-blue);
+      background: #bbdefb;
+      color: var(--main-blue-dark);
+    }
+    .layered-view {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .layer {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .layer-title {
+      min-width: 80px;
+      font-weight: 500;
+      color: var(--main-blue);
+      margin-top: 6px;
+    }
+    .download-btn {
+      margin: -2px auto 0 auto;
+      background: var(--main-blue);
+      color: var(--main-white);
+      font-size: 1.1rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 48px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(33, 150, 243, 0.10);
+      transition: background 0.2s;
+      display: block;
+      width: auto;
+    }
+    .download-btn:hover {
+      background: var(--main-blue-dark);
+    }
+    @media (max-width: 900px) {
+      .main-content {
+        flex-direction: column;
+        gap: 24px;
+      }
+      .container {
+        padding: 18px 8px 12px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">服务端代码生成工具</div>
+    <div class="main-content">
+      <!-- 左侧 Project Metadata 区域 -->
+      <form class="form-section" id="projectForm" autocomplete="off" onsubmit="return false;">
+        <div class="form-group">
+          <label>springboot版本</label>
+          <input type="radio" id="springboot2" name="springbootVersion" value="springboot2" checked />
+          <label for="springboot2">springboot2+jdk1.8</label>
+          <input type="radio" id="springboot3" name="springbootVersion" value="springboot3" required />
+          <label for="springboot3">springboot3+jdk17</label>
+        </div>
+        <div class="form-group">
+          <label for="groupId">groupId</label>
+          <input type="text" id="groupId" name="groupId" required placeholder="如：com.example" value="com.funny"/>
+        </div>
+        <div class="form-group">
+          <label for="artifactId">artifactId</label>
+          <input type="text" id="artifactId" name="artifactId" required placeholder="如：myapp"/>
+        </div>
+        <div class="form-group">
+          <label for="version">version</label>
+          <input type="text" id="version" name="version" required placeholder="如：1.0.0"  value="1.0.0"/>
+        </div>
+        <div class="form-group">
+          <label for="packageName">packageName</label>
+          <input type="text" id="packageName" name="packageName" required placeholder="如：com.example.myapp" value="com.funny"/>
+        </div>
+        <div class="form-group">
+          <label for="description">项目描述</label>
+          <textarea id="description" name="description" placeholder="请输入项目描述"></textarea>
+        </div>
+        <div class="form-group" style="align-items: flex-start;">
+          <label style="margin-top: 8px;">应用类型</label>
+          <div class="radio-group" id="appTypeGroup">
+            <label class="radio-box selected">
+              <input type="radio" name="appType" value="monolith" checked />
+              <span>单体应用</span>
+            </label>
+            <label class="radio-box">
+              <input type="radio" name="appType" value="layered" />
+              <span>传统分层应用</span>
+            </label>
+            <label class="radio-box">
+              <input type="radio" name="appType" value="ddd" />
+              <span>DDD应用</span>
+            </label>
+          </div>
+        </div>
+        <button class="download-btn" id="downloadBtn">下载</button>
+      </form>
+      <!-- 右侧 项目分层预览区域 -->
+      <div class="preview-section">
+        <div class="preview-title">可选组件</div>
+        <div class="preview-section-scroll"><div id="componentPreview"></div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // 组件数据
+    const components = {
+      monolith: [
+        { key: 'xxl-job', label: 'xxl-job' },
+        { key: 'tool', label: '常用工具' },
+        { key: 'cache', label: '缓存+分布式锁' },
+        { key: 'es', label: 'ElasticSearch' },
+        { key: 'mq', label: '消息队列' },
+        { key: 'encrypt', label: '加解密' },
+      ],
+      layered: [
+        {
+          layer: 'web层',
+          comps: [  ]
+        },
+        {
+          layer: 'task层',
+          comps: [ { key: 'xxl-job', label: 'xxl-job' }]
+        },
+        {
+          layer: 'service层',
+          comps: [ { key: 'tool', label: '常用工具' },
+                   { key: 'cache', label: '缓存+分布式锁' },
+                   { key: 'es', label: 'ElasticSearch' },
+                   { key: 'mq', label: '消息队列' }]
+        },
+        {
+          layer: 'dao层',
+          comps: [ { key: 'encrypt', label: '加解密' }]
+        }
+      ],
+      ddd: [
+        {
+          layer: '接口层',
+          comps: [ { key: 'web', label: 'Web接口' } ]
+        },
+        {
+          layer: '应用层',
+          comps: [ { key: 'service', label: '应用服务' }, { key: 'job', label: '定时任务' } ]
+        },
+        {
+          layer: '领域层',
+          comps: [ { key: 'domain', label: '领域模型' } ]
+        },
+        {
+          layer: '基础设施',
+          comps: [ { key: 'dao', label: '数据访问' }, { key: 'cache', label: '缓存' }, { key: 'mq', label: '消息队列' }, { key: 'security', label: '安全认证' }, { key: 'monitor', label: '监控' } ]
+        }
+      ]
+    };
+
+    // 组件选中状态
+    let selectedComponents = new Set();
+    let currentAppType = 'monolith';
+
+    function renderComponents(appType) {
+      const preview = document.getElementById('componentPreview');
+      preview.innerHTML = '';
+      if (appType === 'monolith') {
+        const list = document.createElement('div');
+        list.className = 'component-list monolith';
+        components.monolith.forEach(comp => {
+          const box = document.createElement('div');
+          box.className = 'component-box' + (selectedComponents.has(comp.key) ? ' selected' : '');
+          box.textContent = comp.label;
+          box.onclick = () => toggleComponent(comp.key);
+          list.appendChild(box);
+        });
+        preview.appendChild(list);
+      } else {
+        const layered = document.createElement('div');
+        layered.className = 'layered-view';
+        (appType === 'layered' ? components.layered : components.ddd).forEach(layer => {
+          const layerDiv = document.createElement('div');
+          layerDiv.className = 'layer';
+          const title = document.createElement('div');
+          title.className = 'layer-title';
+          title.textContent = layer.layer;
+          layerDiv.appendChild(title);
+          const comps = document.createElement('div');
+          comps.className = 'component-list';
+          layer.comps.forEach(comp => {
+            const box = document.createElement('div');
+            box.className = 'component-box' + (selectedComponents.has(comp.key) ? ' selected' : '');
+            box.textContent = comp.label;
+            box.onclick = () => toggleComponent(comp.key);
+            comps.appendChild(box);
+          });
+          layerDiv.appendChild(comps);
+          layered.appendChild(layerDiv);
+        });
+        preview.appendChild(layered);
+      }
+    }
+
+    function toggleComponent(key) {
+      if (selectedComponents.has(key)) {
+        selectedComponents.delete(key);
+      } else {
+        selectedComponents.add(key);
+      }
+      renderComponents(currentAppType);
+    }
+
+    // 应用类型切换
+    document.getElementById('appTypeGroup').addEventListener('click', function(e) {
+      if (e.target.closest('.radio-box')) {
+        const boxes = this.querySelectorAll('.radio-box');
+        boxes.forEach(box => box.classList.remove('selected'));
+        e.target.closest('.radio-box').classList.add('selected');
+        const radio = e.target.closest('.radio-box').querySelector('input[type="radio"]');
+        if (radio) {
+          radio.checked = true;
+          currentAppType = radio.value;
+          // 切换应用类型时重置组件选择
+          selectedComponents = new Set();
+          renderComponents(currentAppType);
+        }
+      }
+    });
+
+    // 下载按钮事件
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+      const form = document.getElementById('projectForm');
+      const data = {
+        springbootVersion: form.springbootVersion.value,
+        groupId: form.groupId.value.trim(),
+        artifactId: form.artifactId.value.trim(),
+        version: form.version.value.trim(),
+        packageName: form.packageName.value.trim(),
+        description: form.description.value.trim(),
+        appType: currentAppType,
+        components: Array.from(selectedComponents)
+      };
+      // 校验
+      if (!data.groupId || !data.artifactId || !data.packageName) {
+        alert('请填写完整项目信息');
+        return;
+      }
+      // 提交到服务端生成并下载
+      fetch('/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('生成失败');
+        return res.blob();
+      })
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${data.artifactId || 'project'}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(() => alert('生成或下载失败，请稍后重试'));
+    });
+
+    // 初始化
+    renderComponents(currentAppType);
+  </script>
+</body>
+</html> 

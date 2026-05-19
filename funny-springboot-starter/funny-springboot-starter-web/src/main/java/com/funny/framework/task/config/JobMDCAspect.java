@@ -1,7 +1,7 @@
 package com.funny.framework.task.config;
 
 import com.funny.framework.log.common.LogFieldName;
-import com.funny.framework.log.utils.LogTraceUtil;
+import com.funny.framework.log.tracing.TraceIdGenerator;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -23,7 +23,7 @@ public class JobMDCAspect {
         try {
             String traceId = MDC.get(LogFieldName.TRACE_ID);
             if(StringUtils.isBlank(traceId)){
-                MDC.put(LogFieldName.TRACE_ID, LogTraceUtil.getNewTraceId());
+                MDC.put(LogFieldName.TRACE_ID, TraceIdGenerator.generate());
             }
         }catch (Exception e){
             logger.error("create mdc in job error",e);

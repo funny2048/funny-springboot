@@ -87,7 +87,7 @@ feign:
 funny:
   log:
     enabled: true
-    host: sample-web
+    host: sample-web.funny.com
     access-log:
       enabled: true
       response-content-max-length: 2000

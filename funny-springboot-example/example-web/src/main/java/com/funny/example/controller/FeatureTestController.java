@@ -1,8 +1,29 @@
 package com.funny.example.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.funny.example.dao.entity.CryptoTestDO;
+import com.funny.example.dao.mapper.CryptoTestMapper;
 import com.funny.framework.core.result.ApiResult;
 import com.funny.framework.crypto.model.CryptoEntry;
 import com.funny.framework.crypto.utils.CryptoUtils;
+import com.funny.framework.log.context.ContextAwareExecutor;
+import com.funny.framework.log.context.ContextAwareSpringExecutor;
+import com.funny.framework.log.tracing.TraceAwareTask;
 import com.funny.framework.redis.DistributedLock;
 import com.funny.framework.redis.RedisLock;
 import com.funny.framework.redis.RedisLockManager;
@@ -10,18 +31,8 @@ import com.funny.framework.sign.annotation.AppIdCheck;
 import com.funny.framework.sign.annotation.SignVerify;
 import com.funny.framework.sign.helper.SignHelper;
 import com.funny.framework.sign.model.SignParamMap;
-import com.funny.example.dao.entity.CryptoTestDO;
-import com.funny.example.dao.mapper.CryptoTestMapper;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 功能测试控制器 - 测试 sign 签名 / redis 分布式锁 / crypto 加解密
@@ -102,7 +113,7 @@ public class FeatureTestController {
      * @param key      锁的业务key
      * @param expireMs 锁过期时间（毫秒）
      */
-    @PostMapping("/lock/manual")
+    @GetMapping("/lock/manual")
     public ApiResult<Map<String, Object>> manualLock(
             @RequestParam("key") String key,
             @RequestParam(value = "expireMs", defaultValue = "10000") long expireMs) {
@@ -134,7 +145,7 @@ public class FeatureTestController {
      * @param taskId 任务ID，会作为锁的一部分
      */
     @DistributedLock(key = "'test:lock:annotation:' + #taskId", expireInMilliseconds = 10000)
-    @PostMapping("/lock/annotation")
+    @GetMapping("/lock/annotation")
     public ApiResult<String> annotationLock(@RequestParam("taskId") String taskId) {
         log.info("annotationLock, taskId={}", taskId);
         return ApiResult.succ("注解式分布式锁获取成功, taskId=" + taskId);
@@ -146,7 +157,7 @@ public class FeatureTestController {
      *
      * @param threadCount 并发线程数
      */
-    @PostMapping("/lock/concurrent")
+    @GetMapping("/lock/concurrent")
     public ApiResult<Map<String, Object>> concurrentLock(
             @RequestParam(value = "threadCount", defaultValue = "5") int threadCount) {
         log.info("concurrentLock, threadCount={}", threadCount);
@@ -203,7 +214,7 @@ public class FeatureTestController {
      * 加密文本 - 使用 CryptoUtils (AES/GCM 模式)
      * 返回: 原文、密文、MD5 hash
      */
-    @PostMapping("/crypto/encrypt")
+    @GetMapping("/crypto/encrypt")
     public ApiResult<CryptoEntry> encrypt(@RequestParam("text") String text) {
         log.info("encrypt, text={}", text);
         try {
@@ -219,7 +230,7 @@ public class FeatureTestController {
      * 解密文本 - 使用 CryptoUtils
      * 传入密文，返回原文和 hash
      */
-    @PostMapping("/crypto/decrypt")
+    @GetMapping("/crypto/decrypt")
     public ApiResult<CryptoEntry> decrypt(@RequestParam("encryptedText") String encryptedText) {
         log.info("decrypt, encryptedText={}", encryptedText);
         try {
@@ -234,7 +245,7 @@ public class FeatureTestController {
     /**
      * 完整加解密流程 - 加密后再解密，验证数据一致性
      */
-    @PostMapping("/crypto/round-trip")
+    @GetMapping("/crypto/round-trip")
     public ApiResult<Map<String, String>> roundTrip(@RequestParam("text") String text) {
         log.info("roundTrip, text={}", text);
 
@@ -262,7 +273,7 @@ public class FeatureTestController {
      *
      * 需要先创建 crypto_test 表，DDL 见 CryptoTestDO 类注释
      */
-    @PostMapping("/crypto/db-save")
+    @GetMapping("/crypto/db-save")
     public ApiResult<Long> saveCryptoRecord(
             @RequestParam("name") String name,
             @RequestParam("phone") String phone) {
@@ -285,6 +296,40 @@ public class FeatureTestController {
     public ApiResult<CryptoTestDO> getCryptoRecord(@RequestParam("id") Long id) {
         log.info("getCryptoRecord, id={}", id);
         CryptoTestDO entity = cryptoTestMapper.selectById(id);
+
         return ApiResult.succ(entity);
     }
+
+
+    @GetMapping("/thread/trace")
+    public ApiResult threadTrace() {
+        log.info("threadTrace, threadId={}", Thread.currentThread().threadId());
+        ContextAwareExecutor executor = new ContextAwareExecutor(4, 8, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+        executor.submit(() -> {
+            log.info("executor.submit threadId={}", Thread.currentThread().threadId());
+        });
+
+        // Spring 线程池
+        ContextAwareSpringExecutor springExecutor = new ContextAwareSpringExecutor();
+        springExecutor.setCorePoolSize(4);
+        springExecutor.setMaxPoolSize(8);
+        springExecutor.setQueueCapacity(100);
+        springExecutor.setThreadNamePrefix("ctx-aware-");
+        springExecutor.initialize();
+        springExecutor.submit(() -> {
+            log.info("springExecutor.submit threadId={}", Thread.currentThread().threadId());
+        });
+
+        // 单任务追踪
+        new TraceAwareTask() {
+            @Override
+            protected void execute() {
+                log.info("TraceAwareTask threadId={}", Thread.currentThread().threadId());
+            }
+        }.start();
+        return ApiResult.succ();
+    }
 }
+
+
+

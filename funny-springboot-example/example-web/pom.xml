@@ -22,17 +22,15 @@
         </dependency>
         <dependency>
             <groupId>com.funny</groupId>
-            <artifactId>funny-springboot-starter-web</artifactId>
+            <artifactId>funny-springboot-starter-service</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                    <groupId>org.springframework.boot</groupId>
-                </exclusion>
-            </exclusions>
+            <groupId>com.funny</groupId>
+            <artifactId>funny-springboot-starter-task</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.funny</groupId>
+            <artifactId>funny-springboot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -45,24 +43,9 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>2.3.31</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.xuxueli</groupId>
-            <artifactId>xxl-job-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.skywalking</groupId>
-            <artifactId>apm-toolkit-trace</artifactId>
-            <version>9.3.0</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

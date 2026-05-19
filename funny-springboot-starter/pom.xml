@@ -19,7 +19,9 @@
     <modules>
         <module>funny-springboot-starter-parent</module>
         <module>funny-springboot-starter-web</module>
+        <module>funny-springboot-starter-service</module>
         <module>funny-springboot-starter-dao</module>
+        <module>funny-springboot-starter-task</module>
     </modules>
 
     <properties>

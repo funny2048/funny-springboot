@@ -10,10 +10,9 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.funny</groupId>
-    <artifactId>funny-springboot-starter-web</artifactId>
+    <artifactId>funny-springboot-starter-task</artifactId>
 
     <dependencies>
-        <!-- Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -28,25 +27,22 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
-
-        <!-- 内部 starter -->
+        <!-- 日志 -->
         <dependency>
             <groupId>com.funny</groupId>
             <artifactId>funny-springboot-starter-log</artifactId>
         </dependency>
+
+        <!-- AOP（JobMDCAspect 需要） -->
         <dependency>
-            <groupId>com.funny</groupId>
-            <artifactId>funny-springboot-starter-crypto</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.funny</groupId>
-            <artifactId>funny-springboot-starter-sign</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
-        <!-- Service 层：Feign + COLA + Redis -->
+        <!-- XXL-Job -->
         <dependency>
-            <groupId>com.funny</groupId>
-            <artifactId>funny-springboot-starter-service</artifactId>
+            <groupId>com.xuxueli</groupId>
+            <artifactId>xxl-job-core</artifactId>
         </dependency>
     </dependencies>
 

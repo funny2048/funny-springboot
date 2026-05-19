@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.funny</groupId>
+        <artifactId>funny-springboot-starter-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../funny-springboot-starter-parent/pom.xml</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.funny</groupId>
+    <artifactId>funny-springboot-starter-service</artifactId>
+
+    <dependencies>
+        <!-- Redis -->
+        <dependency>
+            <groupId>com.funny</groupId>
+            <artifactId>funny-springboot-starter-redis</artifactId>
+        </dependency>
+
+        <!-- RPC -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- COLA Extension -->
+        <dependency>
+            <groupId>com.alibaba.cola</groupId>
+            <artifactId>cola-component-extension-starter</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

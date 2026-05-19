@@ -41,7 +41,17 @@
             </dependency>
             <dependency>
                 <groupId>com.funny</groupId>
+                <artifactId>funny-springboot-starter-service</artifactId>
+                <version>${funny-springboot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.funny</groupId>
                 <artifactId>funny-springboot-starter-dao</artifactId>
+                <version>${funny-springboot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.funny</groupId>
+                <artifactId>funny-springboot-starter-task</artifactId>
                 <version>${funny-springboot.version}</version>
             </dependency>
 

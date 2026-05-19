@@ -7,7 +7,7 @@
         <property name="log.path">/data/logs/applog</property>
         <property name="log.root.level">INFO</property>
         <property name="system">archtech</property>
-        <property name="project">sample</property>
+        <property name="project">codegen</property>
         <property name="env">test</property>
         <!--日志文件保存天数-->
         <property name="log.save.time">3d</property>
@@ -23,7 +23,7 @@
                     pattern="%d{yyyy-MM-dd HH:mm:ss}`${system}`${project}`%highlight{%p}`%l`%m`%n" />
 
         </Console>
-
+        <!-- 推送鹰眼日志  start -->
         <!-- 运行日志 -->
         <RollingFile name="ProgramRun" ignoreExceptions="false" fileName="${log.path}/project_run.log" filePattern="${log.path}/project_run.log_%d{yyyy-MM-dd}-%i">
             <CsvLayout charset="UTF-8" system="${system}" project="${project}" env="${env}"/>
@@ -58,7 +58,6 @@
         <RollingFile name="SpringError" ignoreExceptions="false"
                      fileName="${sys:log.path}/spring_error.log"
                      filePattern="${sys:log.path}/spring_error_%d{yyyy-MM-dd}.log">
-            <Autolog4jCsvLayout charset="UTF-8" department="${sys:department}" team="${sys:team}" project="${sys:project}"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
             </Policies>

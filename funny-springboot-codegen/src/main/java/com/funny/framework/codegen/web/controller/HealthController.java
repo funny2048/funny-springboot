@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthController {
     @GetMapping("/heartbeat")
     public String heartbeat() {
+        log.info("heartbeat");
         return "ok";
     }
 

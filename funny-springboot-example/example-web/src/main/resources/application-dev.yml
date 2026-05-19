@@ -60,6 +60,9 @@ funny:
       max-idle: 8
       max-wait: 3000
       min-idle: 0
+  logging:
+    enabled: true
+    host: sample-web.funny.com
   crypto:
     enabled: true
     model: local

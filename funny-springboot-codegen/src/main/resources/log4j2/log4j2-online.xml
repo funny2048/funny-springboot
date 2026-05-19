@@ -7,7 +7,7 @@
         <property name="log.path">/data/logs/applog</property>
         <property name="log.root.level">INFO</property>
         <property name="system">archtech</property>
-        <property name="project">sample</property>
+        <property name="project">codegen</property>
         <property name="env">online</property>
         <!--日志文件保存天数-->
         <property name="log.save.time">3d</property>

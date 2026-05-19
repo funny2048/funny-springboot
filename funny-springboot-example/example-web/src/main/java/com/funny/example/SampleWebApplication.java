@@ -1,5 +1,6 @@
 package com.funny.example;
 
+import com.funny.example.client.CodegenFeignClient;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -7,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -20,6 +22,7 @@ import java.net.UnknownHostException;
 @MapperScan(value = {"com.funny.example.dao.mapper"})
 @SpringBootApplication(scanBasePackages = {"com.funny.example"})
 @EnableTransactionManagement
+@EnableFeignClients(basePackages = {"com.funny.example.client"})
 public class SampleWebApplication extends SpringBootServletInitializer {
 
     @Override

@@ -8,7 +8,7 @@
         <property name="log.root.level">INFO</property>
         <property name="system">archtech</property>
         <property name="project">sample</property>
-        <property name="env">online</property>
+        <property name="env">test</property>
         <!--日志文件保存天数-->
         <property name="log.save.time">3d</property>
     </properties>

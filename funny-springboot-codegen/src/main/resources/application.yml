@@ -1,6 +1,6 @@
 spring:
   application:
-    name: framework-codegen
+    name: codegen-web
   profiles:
     active: dev
 server:
@@ -21,6 +21,7 @@ server:
 #mybatis plus 设置
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml
+  #  type-aliases-package: com.funny.example.dao.entity
   global-config:
     # 关闭MP3.0自带的banner
     banner: false
@@ -37,7 +38,6 @@ management:
     add-application-context-header: false # 禁用在响应头中添加应用上下文信息，这有助于减少潜在的安全风险，避免暴露应用内部结构。
   endpoint:
     health:
-      enabled: true # 启用健康检查端点
       cache:
         time-to-live: 10s # 设置健康检查结果的缓存时间为 10 秒，减少频繁检查的性能开销
       probes:
@@ -58,18 +58,19 @@ management:
     readinessstate:
       enabled: true # 启用就绪状态检查，用于 Kubernetes 判断应用是否可以接收流量
   metrics:
-    export:
-      statsd:
-        flavor: telegraf # 使用 Telegraf 风格的 StatsD 协议
-        publish-unchanged-meters: true # 即使指标值未变化也发布，确保监控系统获取完整数据
-        pollingFrequency: 10s # 设置指标收集频率为 10 秒
-        enabled: true #启用 StatsD 指标导出
     web:
       server:
         max-uri-tags: 10000
         request:
           autotime:
             enabled: true
+  statsd:
+    metrics:
+      export:
+        flavor: telegraf
+        publish-unchanged-meters: true
+        polling-frequency: 10s
+        enabled: true
 feign:
   hystrix:
     enabled: false
@@ -80,10 +81,5 @@ feign:
   client:
     config:
       default:   # 默认配置
-        connect-timeout: 1000 # 单位毫秒
+        connect-timeout: 3000 # 单位毫秒
         read-timeout: 3000 # 单位毫秒
-framework:
-  log:
-    enabled: true
-  web:
-    useDisallowedField: true

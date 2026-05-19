@@ -11,7 +11,7 @@ server:
     connection-timeout: 15000
     mbeanregistry:
       enabled: true
-  port: 8080
+  port: 8081
   servlet:
     encoding:
       charset: UTF-8
@@ -82,17 +82,5 @@ feign:
   client:
     config:
       default:   # 默认配置
-        connect-timeout: 1000 # 单位毫秒
+        connect-timeout: 3000 # 单位毫秒
         read-timeout: 3000 # 单位毫秒
-funny:
-  log:
-    enabled: true
-    host: sample-web.funny.com
-    access-log:
-      enabled: true
-      response-content-max-length: 2000
-      form-string-max-length: 2000
-    slow-log:
-      enabled: true
-      threshold-in-millis: 500
-      pointcut-expression: "execution(* com.funny.example.service..*.*(..))"

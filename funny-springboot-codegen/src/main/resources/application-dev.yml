@@ -1,6 +1,9 @@
+#Mybatis输出sql日志
+logging:
+  level:
+    com.funny.example.dao.mapper: DEBUG
+  config: classpath:log4j2/log4j2-test.xml
 spring:
-  autoconfigure:
-    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
   datasource:
     dynamic:
       druid: # 全局druid参数，绝大部分值和默认保持一致。(现已支持的参数如下,不清楚含义不要乱设置)
@@ -35,27 +38,39 @@ spring:
           username: root
           password: Astack@123
           driver-class-name: com.mysql.cj.jdbc.Driver
-  #redis 配置
+          # 多数据源配置
+          #multi-datasource1:
+          #url: jdbc:mysql://localhost:3306/jeecg-boot2?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+          #username: root
+          #password: root
+          #driver-class-name: com.mysql.cj.jdbc.Driver
+
+# funny-redis-springboot-starter 配置（激活条件：配置 funny.redis.host）
+funny:
   redis:
     host: 127.0.0.1
+    port: 6379
     database: 0
     password: ''
-    port: 6379
-    jedis:
-      pool:
-        max-active: 8
-        max-idle: 8
-        max-wait: -1
-        min-idle: 0
-    timeout: 0
-#Mybatis输出sql日志
-logging:
-  level:
-    com.funny.framework.codegen.dao.mapper: DEBUG
-  config: classpath:log4j2/log4j2-test.xml
-  file:
-    path: /data/logs/applog
+    timeout: 3000
+    pool:
+      max-active: 8
+      max-idle: 8
+      max-wait: 3000
+      min-idle: 0
+  logging:
+    enabled: true
+    host: code-web.funny.com
+  crypto:
+    enabled: true
+    model: local
+    app-key: demo-app-key-2024
+  sign:
+    enabled: true
+    host: http://localhost:8080/api
+
 mybatis-plus:
   configuration:
     # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

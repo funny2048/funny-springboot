@@ -13,7 +13,7 @@ out/
 .classpath
 .project
 .settings/
-
+.flattened-pom.xml
 # IDE - VS Code
 .vscode/
 

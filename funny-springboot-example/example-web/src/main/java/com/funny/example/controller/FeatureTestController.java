@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.funny.example.client.CodegenFeignClient;
 import com.funny.example.dao.entity.CryptoTestDO;
 import com.funny.example.dao.mapper.CryptoTestMapper;
 import com.funny.framework.core.result.ApiResult;
@@ -32,6 +33,7 @@ import com.funny.framework.sign.annotation.SignVerify;
 import com.funny.framework.sign.helper.SignHelper;
 import com.funny.framework.sign.model.SignParamMap;
 
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -51,13 +53,24 @@ public class FeatureTestController {
     @Autowired
     private CryptoTestMapper cryptoTestMapper;
 
+
+    @Resource
+    private CodegenFeignClient codegenFeignClient;
+
+    @GetMapping("/log")
+    public String log() {
+        log.info("log info");
+        log.warn("log warn");
+        log.error("log error");
+        return "ok";
+    }
     // ==================== Sign 模块测试 ====================
 
     /**
      * 生成签名 - 手动调用 SignHelper 演示签名算法
      * 算法: MD5(appKey + 按key排序的参数拼接 + appKey).toUpperCase()
      *
-     * @param appKey  应用密钥
+     * @param appKey   应用密钥
      * @param bizParam 业务参数（可选）
      */
     @PostMapping("/sign/generate")
@@ -253,12 +266,12 @@ public class FeatureTestController {
             CryptoEntry encrypted = cryptoUtils.encrypt(text);
             CryptoEntry decrypted = cryptoUtils.decrypt(encrypted.getEncrypted());
 
-        Map<String, String> result = new HashMap<>();
-        result.put("original", text);
-        result.put("encrypted", encrypted.getEncrypted());
-        result.put("decrypted", decrypted.getOrigin());
-        result.put("hash", encrypted.getHash());
-        result.put("match", String.valueOf(text.equals(decrypted.getOrigin())));
+            Map<String, String> result = new HashMap<>();
+            result.put("original", text);
+            result.put("encrypted", encrypted.getEncrypted());
+            result.put("decrypted", decrypted.getOrigin());
+            result.put("hash", encrypted.getHash());
+            result.put("match", String.valueOf(text.equals(decrypted.getOrigin())));
             return ApiResult.succ(result);
         } catch (Exception e) {
             log.error("加解密流程失败, text={}", text, e);
@@ -270,7 +283,7 @@ public class FeatureTestController {
      * 数据库加密写入 - 验证 EncryptTypeHandler / HashTypeHandler
      * phone_encrypt 字段写入时自动加密，读取时自动解密
      * phone_hash 字段写入时自动取 MD5 hash（不可逆）
-     *
+     * <p>
      * 需要先创建 crypto_test 表，DDL 见 CryptoTestDO 类注释
      */
     @GetMapping("/crypto/db-save")
@@ -328,6 +341,13 @@ public class FeatureTestController {
             }
         }.start();
         return ApiResult.succ();
+    }
+
+    @GetMapping("/feign")
+    public ApiResult<String> heartbeat() {
+        log.info("feign call codegen heartbeat");
+        String result = codegenFeignClient.heartbeat();
+        return ApiResult.succ(result);
     }
 }
 

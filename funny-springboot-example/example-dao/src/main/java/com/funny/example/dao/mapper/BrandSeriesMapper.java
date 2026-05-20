@@ -1,8 +1,9 @@
 package com.funny.example.dao.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.funny.example.dao.entity.BrandSeriesDO;
-import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>

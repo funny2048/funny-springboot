@@ -1,9 +1,6 @@
-#Mybatis输出sql日志
-logging:
-  config: classpath:log4j2/log4j2-test.xml
-  file:
-    path: /data/logs/applog
 spring:
+#  autoconfigure:
+#    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
   datasource:
     dynamic:
       druid: # 全局druid参数，绝大部分值和默认保持一致。(现已支持的参数如下,不清楚含义不要乱设置)
@@ -47,27 +44,14 @@ spring:
 
 # funny-redis-springboot-starter 配置（激活条件：配置 funny.redis.host）
 funny:
-  logging:
-    enabled: true
-    host: sample-web.funny.com
-  crypto:
-    enabled: true
-    model: local
-    app-key: demo-app-key-2024
-  sign:
-    enabled: true
-    host: http://localhost:8080/api
-
-
-framework:
-  job:
-    accessToken: ''
-#    admin:
-#      addresses: http://framework-job.funny.com
-    executor:
-      address: ''
-      appname: ${spring.application.name}
-      ip: ''
-      logpath: ${logging.file.path}/jobhandler
-      logretentiondays: 30
-      port: 9999
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    password: ''
+    timeout: 3000
+    pool:
+      max-active: 8
+      max-idle: 8
+      max-wait: 3000
+      min-idle: 0

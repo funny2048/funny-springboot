@@ -1,11 +1,8 @@
 package com.funny.example;
 
-import com.funny.example.client.CodegenFeignClient;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -36,7 +33,7 @@ public class SampleWebApplication extends SpringBootServletInitializer {
         String host = InetAddress.getLocalHost().getHostAddress();
         String port = env.getProperty("server.port");
         String pathContext = env.getProperty("server.servlet.context-path");
-
+        System.out.println("Application Start Success! host = " + host + " port = " + port + " pathContext = " + pathContext + " \n");
     }
 
 }

@@ -1,10 +1,15 @@
 package com.funny.example.dao.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -102,11 +107,11 @@ public class BrandSeriesDO {
      * 新增时间
      */
     @TableField("create_stime")
-    private LocalDateTime createStime;
+    private Date createStime;
 
     /**
      * 变更时间
      */
     @TableField("modified_stime")
-    private LocalDateTime modifiedStime;
+    private Date modifiedStime;
 }

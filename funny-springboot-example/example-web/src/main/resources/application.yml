@@ -3,6 +3,9 @@ spring:
     name: sample-web
   profiles:
     active: dev
+    group:
+      dev: daodev,servicedev
+      daodev: dao
 server:
   tomcat:
     threads:
@@ -19,21 +22,7 @@ server:
       force: true
     context-path: /api
   shutdown: graceful
-#mybatis plus 设置
-mybatis-plus:
-  mapper-locations: classpath*:/mapper/*Mapper.xml
-#  type-aliases-package: com.funny.example.dao.entity
-  global-config:
-    # 关闭MP3.0自带的banner
-    banner: false
-    db-config:
-      #主键类型  0:"数据库ID自增",1:"该类型为未设置主键类型", 2:"用户输入ID",3:"全局唯一ID (数字类型唯一ID)", 4:"全局唯一ID UUID",5:"字符串全局唯一ID (idWorker 的字符串表示)";
-      id-type: auto
-      # 默认数据库表下划线命名
-      table-underline: true
-  configuration:
-    # 返回类型为Map,显示null对应的字段
-    call-setters-on-nulls: true
+
 management:
   server:
     add-application-context-header: false # 禁用在响应头中添加应用上下文信息，这有助于减少潜在的安全风险，避免暴露应用内部结构。
@@ -72,15 +61,3 @@ management:
         publish-unchanged-meters: true
         polling-frequency: 10s
         enabled: true
-feign:
-  hystrix:
-    enabled: false
-  httpclient:
-    enabled: false
-  okhttp:
-    enabled: true
-  client:
-    config:
-      default:   # 默认配置
-        connect-timeout: 3000 # 单位毫秒
-        read-timeout: 3000 # 单位毫秒

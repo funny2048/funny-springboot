@@ -16,11 +16,4 @@ public class HealthController {
         return "ok";
     }
 
-    @GetMapping("/log")
-    public String log() {
-        log.info("log info");
-        log.warn("log warn");
-        log.error("log error");
-        return "ok";
-    }
 }

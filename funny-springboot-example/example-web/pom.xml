@@ -14,15 +14,11 @@
     <dependencies>
         <dependency>
             <groupId>com.funny</groupId>
-            <artifactId>example-api</artifactId>
+            <artifactId>example-service</artifactId>
         </dependency>
         <dependency>
             <groupId>com.funny</groupId>
-            <artifactId>funny-springboot-starter-dao</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.funny</groupId>
-            <artifactId>funny-springboot-starter-service</artifactId>
+            <artifactId>example-client</artifactId>
         </dependency>
         <dependency>
             <groupId>com.funny</groupId>
@@ -31,21 +27,6 @@
         <dependency>
             <groupId>com.funny</groupId>
             <artifactId>funny-springboot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                    <groupId>org.springframework.boot</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

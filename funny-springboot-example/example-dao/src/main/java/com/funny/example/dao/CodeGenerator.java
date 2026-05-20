@@ -1,5 +1,10 @@
 package com.funny.example.dao;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
@@ -10,11 +15,6 @@ import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-
 /***
  * 代码生成器 执行 main 方法控制台输入模块表名回车自动生成对应项目目录中
  */
@@ -22,13 +22,13 @@ public class CodeGenerator {
 
     public static void main(String[] args) {
         System.out.println("=====================数据库配置=======================");
-        String url = "jdbc:mysql://localhost:3306/framework?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC";
+        String url = "jdbc:mysql://localhost:3306/combo?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC";
         String username = "root";
-        String password = "Astack@123";
+        String password = "1q2w3e4r";
         String author = "fangli";
-        String parentName = "com.funny.example";// 父包名
+        String parentName = "com.funny.combo.sample";// 父包名
         String moduleName = "sample";// 父包模块名
-        String tableName = "brand_series";//表名，多个英文逗号分隔？所有输入 all
+        String tableName = "sys_user";//表名，多个英文逗号分隔？所有输入 all
         AutoGenerator(url,
                 username,
                 password,
@@ -62,8 +62,8 @@ public class CodeGenerator {
                                         String moduleName,
                                         String tableName) {
         String packagePath = parentName.replace('.', '/');
-        String daoModuleName = moduleName + "-web";
-        String serviceModuleName = moduleName + "-web";
+        String daoModuleName = moduleName + "-dao";
+        String serviceModuleName = moduleName + "-service";
         String webModuleName = moduleName + "-web";
         FastAutoGenerator.create(
                         //数据源配置，url需要修改

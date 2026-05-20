@@ -30,30 +30,27 @@ import com.funny.framework.web.handler.GlobalExceptionAdvice;
 public class FrameworkWebAutoConfiguration implements WebMvcConfigurer {
 
 
+    // FastJSON converter 统一在 extendMessageConverters 中注册到列表头部，确保优先于 Jackson
+
     @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        //1、先定义一个convert转换消息的对象
-        //2、添加fastJson的配置信息，比如:是否要格式化返回json数据；
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        // 将FastJSON converter移到最前面，确保优先于Jackson
+        converters.removeIf(converter -> converter instanceof FastJsonHttpMessageConverter);
+        FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        // 设置fastjson的SerializerFeature序列化属性
         fastJsonConfig.setSerializerFeatures(
                 SerializerFeature.DisableCircularReferenceDetect,
                 SerializerFeature.WriteMapNullValue
         );
         fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        fastJsonConfig.setCharset(Charset.forName("UTF-8"));
-        //3、在convert中添加配置信息
-        FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
-        // 处理中文乱码问题
+        fastJsonConfig.setCharset(StandardCharsets.UTF_8);
         List<MediaType> fastMediaTypes = new ArrayList<>();
         fastMediaTypes.add(MediaType.APPLICATION_JSON);
         fastConverter.setSupportedMediaTypes(fastMediaTypes);
         fastConverter.setFastJsonConfig(fastJsonConfig);
-        converters.add(fastConverter);
-    }
+        // 把 FastJSON 配置移到 extendMessageConverters 中，用 converters.add(0, fastConverter) 插到列表头部，确保优先于 Jackson
+        converters.add(0, fastConverter);
 
-    @Override
-    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         //StringHttpMessageConverter默认编码由ISO-8859-1改为UTF-8
         converters.stream()
                 .filter(converter -> converter instanceof StringHttpMessageConverter)

@@ -1,12 +1,17 @@
 package com.funny.example.dao.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.funny.framework.crypto.handler.EncryptTypeHandler;
 import com.funny.framework.crypto.handler.HashTypeHandler;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 /**
  * 加解密测试表
@@ -51,8 +56,8 @@ public class CryptoTestDO {
     private Integer isDel;
 
     @TableField("created_stime")
-    private LocalDateTime createdStime;
+    private Date createdStime;
 
     @TableField("modified_stime")
-    private LocalDateTime modifiedStime;
+    private Date modifiedStime;
 }

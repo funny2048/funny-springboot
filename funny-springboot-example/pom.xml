@@ -26,7 +26,9 @@
     </properties>
 
     <modules>
-        <module>example-api</module>
+        <module>example-client</module>
+        <module>example-service</module>
+        <module>example-dao</module>
         <module>example-web</module>
     </modules>
 
@@ -34,7 +36,17 @@
         <dependencies>
             <dependency>
                 <groupId>com.funny</groupId>
-                <artifactId>example-api</artifactId>
+                <artifactId>example-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.funny</groupId>
+                <artifactId>example-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.funny</groupId>
+                <artifactId>example-dao</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

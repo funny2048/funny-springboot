@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.querys.MySqlQuery;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
@@ -26,7 +27,7 @@ public class CodeGenerator {
         String username = "root";
         String password = "1q2w3e4r";
         String author = "fangli";
-        String parentName = "com.funny.combo.sample";// 父包名
+        String parentName = "com.funny.sample";// 父包名
         String moduleName = "sample";// 父包模块名
         String tableName = "sys_user";//表名，多个英文逗号分隔？所有输入 all
         AutoGenerator(url,
@@ -87,7 +88,7 @@ public class CodeGenerator {
                 .globalConfig(builder -> builder.author(author)// 设置作者名
                                 .outputDir(System.getProperty("user.dir") + "/"+daoModuleName+"/src/main/java") //设置输出路径：项目的 java 目录下
                                 .commentDate("yyyy-MM-dd hh:mm:ss")//注释日期
-//                                .dateType(DateType.ONLY_DATE)//定义生成的实体类中日期的类型 TIME_PACK=LocalDateTime;ONLY_DATE=Date;
+                                .dateType(DateType.ONLY_DATE)//定义生成的实体类中日期的类型 TIME_PACK=LocalDateTime;ONLY_DATE=Date;
 //                        .enableSwagger()//开启 swagger 模式
                                 .disableOpenDir() //禁止打开输出目录，默认打开
                 )
@@ -100,14 +101,14 @@ public class CodeGenerator {
                                     .service("service")//Service 包名
                                     .serviceImpl("service.impl")// ***ServiceImpl 包名
                                     .xml("mapper") //Mapper XML 包名
-                                    .controller("web.controller") //Controller 包名
+                                    .controller("controller") //Controller 包名
                                     //                        .other("utils")//自定义文件包名
                                     //Collections.singletonMap(OutputFile.mapperXml, System.getProperty("user.dir") + "/sample-dao/src/main/resources/mapper")
                                     .pathInfo(new HashMap<OutputFile, String>() {{
                                         put(OutputFile.xml, System.getProperty("user.dir") + "/"+daoModuleName+"/src/main/resources/mapper");
                                         put(OutputFile.service, System.getProperty("user.dir") + "/"+serviceModuleName+"/src/main/java/"+packagePath+"/service/");
                                         put(OutputFile.serviceImpl, System.getProperty("user.dir") + "/"+serviceModuleName+"/src/main/java/"+packagePath+"/service/impl");
-                                        put(OutputFile.controller, System.getProperty("user.dir") + "/"+webModuleName+"/src/main/java/"+packagePath+"/web/controller/");
+                                        put(OutputFile.controller, System.getProperty("user.dir") + "/"+webModuleName+"/src/main/java/"+packagePath+"/controller/");
                                     }});
                         } //配置 mapper.xml 路径信息：项目的
                         // resources 目录下

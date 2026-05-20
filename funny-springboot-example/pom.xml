@@ -7,8 +7,7 @@
     <parent>
         <groupId>com.funny</groupId>
         <artifactId>funny-springboot-starter-parent</artifactId>
-        <version>${revision}</version>
-        <relativePath>../funny-springboot-starter/funny-springboot-starter-parent/pom.xml</relativePath>
+        <version>1.0.1-RELEASE</version>
     </parent>
 
     <groupId>com.funny</groupId>

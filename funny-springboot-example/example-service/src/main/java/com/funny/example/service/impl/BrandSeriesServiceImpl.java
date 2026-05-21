@@ -1,5 +1,6 @@
 package com.funny.example.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.funny.example.dao.entity.BrandSeriesDO;
 import com.funny.example.dao.mapper.BrandSeriesMapper;
@@ -17,4 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BrandSeriesServiceImpl extends ServiceImpl<BrandSeriesMapper, BrandSeriesDO> implements IBrandSeriesService {
 
+    @Override
+    public void queryBrandSeries(BrandSeriesDO brandSeriesDO) {
+    }
 }

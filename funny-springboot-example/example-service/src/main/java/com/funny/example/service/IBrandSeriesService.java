@@ -13,4 +13,5 @@ import com.funny.example.dao.entity.BrandSeriesDO;
  */
 public interface IBrandSeriesService extends IService<BrandSeriesDO> {
 
+    void queryBrandSeries(BrandSeriesDO brandSeriesDO);
 }

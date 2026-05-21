@@ -20,15 +20,15 @@ import java.net.UnknownHostException;
 @SpringBootApplication(scanBasePackages = {"com.funny.example"})
 @EnableTransactionManagement
 @EnableFeignClients(basePackages = {"com.funny.example.client"})
-public class SampleWebApplication extends SpringBootServletInitializer {
+public class Application extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(SampleWebApplication.class);
+        return application.sources(Application.class);
     }
 
     public static void main(String[] args) throws UnknownHostException {
-        ConfigurableApplicationContext application = SpringApplication.run(SampleWebApplication.class, args);
+        ConfigurableApplicationContext application = SpringApplication.run(Application.class, args);
         Environment env = application.getEnvironment();
         String host = InetAddress.getLocalHost().getHostAddress();
         String port = env.getProperty("server.port");

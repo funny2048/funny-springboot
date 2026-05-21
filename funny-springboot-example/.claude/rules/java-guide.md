@@ -1,33 +1,3 @@
-## 1. 数据库设计规范
-
-- 表名与字段统一使用 `snake_case` ，表名不使用复数名词，表名、字段名必须使用小写字母或数字，禁止出现数字开头，禁止两个下划线中间只出现数字
-
-- 表达是与否概念的字段，必须使用 is_xxx 的方式命名，数据类型是 unsigned tinyint（1 表示是，0 表示否）。
-
-- 小数类型为 decimal，禁止使用 float 和 double。
-
-- 如果存储的字符串长度几乎相等，使用 char 定长字符串类型。
-
-- varchar 是可变长字符串，不预先分配存储空间，长度不要超过 5000，如果存储长度
-
-  大于此值，定义字段类型为 text，独立出来一张表，用主键来对应，避免影响其它字段索引效
-
-  率。
-
-- 所有表必须包含以下4个通用字段：
-
-> `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
->
-> `created_stime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
->
-> `modified_stime` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
->
-> `is_del` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除 0 正常 1 删除',
-
-- 手机号、密码、用户真实姓名、身份证号、银行卡号、个人住址、员工姓名、公司税务标识、属于敏感信息，必须设计为加密存储，字段后缀 `_encrypt`，手机号额外增加 `_hash` 字段。
-- 主键索引名为 `pk_字段名`；唯一索引名为 `uk_字段名`；普通索引名则为` idx_字段名`。
-- 超过三个表禁止 join ，如需join，必须需要确认，多表 join 必须要注意表索引、SQL 性能。
-
 ## 2. 数据ORM约束
 
 - 禁止跨数据库联表查询
@@ -35,7 +5,7 @@
 - 更新操作禁止直接把查出来的完整实体传入更新，必须新建一个实体对象，只设置 `id` + 需要更新的字段，再调用修改方法。
 - Service 层禁止使用 QueryWrapper、LambdaQueryWrapper写的自定义查询和修改
 - 复杂查询必须使用 Mapper 自定义 SQL
-- 禁止生成以下内容, DELETE or TRUNCATE or DROP 表, UPDATE 无 WHERE,
+- 禁止物理删除和清空数据, DELETE or TRUNCATE or DROP 表, UPDATE 无 WHERE,
 
 ## 3. 多数据源约束
 
@@ -92,7 +62,7 @@
 
 - 禁止将异常的堆栈信息通过接口直接返回。
 - 捕获异常的时候必须打印error日志，示例：logger.error("xxx error,param={}",JSON.toJSONString(param), e);
-- 参数校验失败且无需继续流程时，优先使用 `ApiResult.fail()` 返回
+- 参数校验失败且无需继续流程时，优先使用返回结果包装类返回,非必要不要使用抛出异常的方式。
 
 ## 10.安全规约
 
@@ -120,6 +90,7 @@
 ## 13. 代码规范
 
 - 当满足调用方 ≥ 2，条件分支 ≥ 3 必须抽象，抽象为独立 Service 方法，避免重复逻辑扩散。
+- 方法入参数超过3个以上必须设计为DTO对象传输
 
 ## 14. 禁止事项
 
